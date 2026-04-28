@@ -1,0 +1,44 @@
+Build a CRM web application using React, Node.js, and PostgreSQL (Prisma). The app allows managing sales leads with a focus on simplicity and desktop usage.
+
+**Core Tech Stack:**
+- Frontend: React (Vite), Tailwind CSS, Lucide Icons, react-big-calendar, react-beautiful-dnd.
+- Backend: Node.js (Express), Prisma ORM, PostgreSQL.
+- Auth: Passport.js (Local Strategy) with session cookies.
+
+**User Roles:**
+1. **Admin:** Can see all leads, manage users, and import leads from Excel.
+2. **Sales Rep:** Can only see assigned leads and leads they created.
+
+**Database Schema Requirements:**
+- **User:** id, email, password (hashed), role (ADMIN/SALES), name.
+- **Lead:** id, firstName, lastName, email, phone, status (New, In_Progress, Hold, Proposal, Won, Lost), source, notes (text), contactDate (DateTime), assignedTo (User relation).
+- **LeadHistory:** id, leadId, userId, action, timestamp.
+- **Notification:** id, userId, message, isRead.
+
+**Key Features Implementation:**
+
+1. **Authentication:**
+   - Secure login page.
+   - Middleware to protect routes based on roles.
+
+2. **Lead Management:**
+   - **Kanban View:** Columns by status. Drag & drop updates status.
+   - **Calendar View:** Shows leads by `contactDate`. Drag & drop updates date. **Crucial:** When dropping a lead on a new date, open a modal asking for the specific TIME of contact.
+   - **Lead Card:** Details modal showing basic info + a history timeline (LeadHistory).
+
+3. **Dashboard:**
+   - **Sales Rep:** Top section must be "Today's Agenda" - a list of leads with `contactDate` set to today, sorted by time. Below that, simple stats.
+   - **Admin:** Aggregate stats (Total leads, conversion rates per rep). Ability to filter dashboard by specific Sales Rep.
+
+4. **Excel Import (Admin Only):**
+   - Upload .xlsx file.
+   - Backend checks for duplicates (email/phone).
+   - **Conflict Resolution UI:** If duplicates are found, do NOT auto-save. Show a list to the Admin allowing them to choose for each duplicate: "Skip" or "Overwrite".
+
+5. **Notifications:**
+   - Create an in-app notification (bell icon) for Sales Reps when a lead is assigned to them.
+
+**UI/UX:**
+- Clean, modern, corporate look using Tailwind.
+- Desktop-first design (no need for complex mobile touch optimizations).
+- High contrast for text readability.
